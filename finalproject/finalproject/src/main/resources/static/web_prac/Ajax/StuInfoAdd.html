@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <form>
+        <!--v-model双向绑定-->
+        <p>学号：<input type="text" v-model="stuForm.stuId"/></p>
+        <p>密码：<input type="password" v-model="stuForm.loginPwd"/></p>
+        <p>姓名：<input type="text" v-model="stuForm.stuName"/></p>
+        <p>年级：
+            <input type="radio" name="stuName" v-model="stuForm.gradeNum" value=1 />大一
+            <input type="radio" name="stuName" v-model="stuForm.gradeNum" value=2 />大二
+            <input type="radio" name="stuName" v-model="stuForm.gradeNum" value=3 />大三
+            <input type="radio" name="stuName" v-model="stuForm.gradeNum" value=4 />大四
+        </p>
+        <p>性别：
+            <select v-model="stuForm.gender">
+              <option value="male">男</option>
+              <option value="female">女</option>
+            </select>
+          </p>          
+        <p><button @click.prevent="register()">添加学生信息</button></p>
+        </form>
+    </div>
+    <script src="../Ajax/axios.min.js"></script>
+    <script src="../vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                stuForm:{
+                    stuId:'20226816',
+                    loginPwd:'1111',
+                    stuName:'nikki',
+                    gradeNum:2,
+                    gender:'female'
+                }
+            },methods:{
+                register(){
+                    let fd = new FormData();
+                    fd.append('stuId',this.stuForm.stuId);
+                    fd.append('loginPwd',this.stuForm.loginPwd);
+                    fd.append('stuName',this.stuForm.stuName);
+                    fd.append('grade.gradeNum',this.stuForm.gradeNum);
+                    fd.append('gender',this.stuForm.gender);
+                    
+                    axios.post('http://localhost:8080/student/register',fd).then(res=>{
+                        alert(res.data.msg);
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

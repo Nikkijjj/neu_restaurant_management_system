@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Menu</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style type="text/css">
+        body {
+            display: grid;
+            place-items: center; /* 将子元素居中放置 */
+            height: 100vh; /* 让 body 元素占据整个视口高度 */
+            margin: 0; /* 去除 body 默认的边距 */
+            background-image: url("背景5.jpg"); /* 替换 'your-background-image.jpg' 为你的背景图路径 */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* 这个属性使得背景图固定，不随页面滚动而滚动 */
+            background-repeat: no-repeat;
+        }
+
+        /* 定义带边框的容器样式 */
+        .container {
+            border: 2px solid #f5f1f1; /* 设置容器边框 */
+            padding: 20px; /* 添加内边距以确保内容不贴紧边框 */
+            width: 400px; /* 设置容器宽度 */
+            height: 600px; /* 根据内容大小调整高度 */
+            border-radius: 4px;
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+            display: flex; /* 使用 Flexbox 布局 */
+            flex-direction: column; /* 垂直方向布局 */
+            align-items: center; /* 在水平方向上居中 */
+            justify-content: center; /* 在垂直方向上居中 */
+        }
+
+        .el-icon-s-check{
+            font-size: 60px;
+            height: 50px;
+        }
+
+        /* 设置按钮样式 */
+        .container > .el-button {
+            margin-top: 100px; /* 设置按钮之间的间距 */
+        
+        }
+        
+
+    </style>
+</head>
+<body>
+    <h1 style="color: rgb(89, 101, 239); font-family: Arial, sans-serif;">请选择管理入口</h1>
+    <div id="app" class="container" style="display: flex;flex-direction: column;align-items: center;">
+        <i class="el-icon-s-check"></i>
+        <el-button type="primary" @click.prevent="redirectTo('userList.html')">用户管理</el-button>
+        <el-button type="primary" @click.prevent="redirectTo('m_foodList.html')" >菜品管理</el-button>
+        <el-button type="primary" @click.prevent="redirectTo('staffList.html')" >员工管理</el-button>
+    </div>
+
+    <script src="../Ajax/axios.min.js"></script>
+    <script src="../vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <script>
+        axios.defaults.withCredentials = true;
+        new Vue({
+            el:"#app",
+            methods:{
+                redirectTo(url){
+                    window.location.href = url;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

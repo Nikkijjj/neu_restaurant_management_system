@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff List</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+    <style>
+        /* 使用Flexbox布局将按钮水平居中 */
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <el-link icon="el-icon-edit" href="addStaff.html" style="font-size: 16px;font-weight: bold;">添加新员工</el-link>
+        <el-table
+            :data="staffs"
+            height="400"
+            border
+            style="width: 100%">
+            <el-table-column
+              prop="staffId"
+              label="员工编号"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="staffName"
+              label="员工姓名"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="staffSalary"
+              label="员工薪资">
+            </el-table-column>
+            <el-table-column
+              prop="entryDate"
+              label="入职时间">
+            </el-table-column>
+            <el-table-column
+              label="操作1">
+              <template slot-scope="scope">
+                <el-button type="danger" size="mini" @click="deleteStaff(scope.row.staffId)">删除</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="操作2">
+              <template slot-scope="scope">
+                <el-button type="danger" size="mini" @click="redirectToUpdatePage(scope.row.staffId)">更新</el-button>
+              </template>
+            </el-table-column>
+        </el-table>
+        <el-link icon="el-icon-menu" href="managerMenu.html" style="font-size: 16px; font-weight: bold;margin-bottom: -20px;">返回管理菜单</el-link>
+        <div class="container">
+          <el-button type="primary" @click="logout()" style="width: 100px; height: 40px;">退出</el-button>
+      </div>
+    </div>
+
+    <script src="../Ajax/axios.min.js"></script>
+    <script src="../vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <script>
+        axios.defaults.withCredentials = true;
+        new Vue({
+            el:"#app",
+            data:{
+                staffs:[]
+            },
+            created(){
+                    //Vue对象创建完成时，执行的钩子函数
+                    this.loadStaff();
+            },
+            methods:{
+                loadStaff(){
+                    axios.get("http://localhost:9000/staff/list").then(res=>{
+                        if(res.data.isOk){
+								// alert(res.data.msg);
+                                // this.$message('加载数据成功');
+								    this.staffs = res.data.staffs;
+                        this.$message.success('加载员工信息成功');
+							}
+                    })
+                },
+                deleteStaff(id){
+                    if(!confirm('是否删除')){
+                        return;
+                    }
+                    axios.get("http://localhost:9000/staff/delete",{params:{id}}).then(res=>{
+                        alert(res.data.msg);
+                        this.loadStaff();
+                    })
+                },
+                redirectToUpdatePage(id) {
+                    // 在这里执行页面跳转
+                    const updateUr1 = 'updateStaff.html?id=' + id;
+                    window.location.href = updateUr1;
+                },
+                logout(){
+                    axios.get("http://localhost:9000/logout").then(res=>{
+
+                        if(res.data ==="安全退出!"){
+                            alert(res.data);
+                            this.$message.success("管理员安全退出！")
+                            window.location.href = 'managerLogin.html';
+                        }else{
+                            alert(res.data);
+                        }
+                    })
+
+                }
+                
+            }
+        
+        })
+    </script>
+</body>
+</html>

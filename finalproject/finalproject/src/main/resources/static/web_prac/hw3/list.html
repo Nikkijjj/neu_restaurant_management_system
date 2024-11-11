@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.center {
+				text-align: center;
+			}
+		</style>
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	</head>
+	<body>
+		<div id="app">
+			<a href="add.html">添加图书</a>
+
+			<table border="1">
+				<tr>
+					<th>编号</th>
+					<th>书名</th>
+					<th>价格</th>
+					<th>描述</th>
+					<th></th>
+				</tr>
+				<tr v-for="b in books" class="center">
+					<td width="50">{{b.bookId}}</td>
+					<td width="200">{{b.title}}</td>
+					<td width="100">{{b.price}}</td>
+					<td width="200" width="50">{{b.desc}}</td>
+					<td width="100">
+						<button @click="delBook(b.bookId)">删除</button>
+					</td>
+				</tr>
+			</table>
+			<el-link icon="el-icon-edit" href="add.html">添加图书</el-link>
+			<el-table :data="books" border style="width: 100%">
+				<el-table-column fixed prop="bookId" label="编号" width="70">
+				</el-table-column>
+				<el-table-column prop="title" label="书名" width="300">
+				</el-table-column>
+				<el-table-column prop="price" label="价格" width="120">
+				</el-table-column>
+				<el-table-column prop="desc" label="描述" width="500">
+				</el-table-column>
+
+				<el-table-column label="操作" width="100">
+					<template slot-scope="scope">
+						
+						<el-popconfirm :title="`确定删除'${scope.row.title}'？`"
+							@confirm="delBook(scope.row.bookId)">
+							<el-button circle icon="el-icon-delete" slot="reference" ></el-button>
+						</el-popconfirm>
+					</template>
+				</el-table-column>
+			</el-table>
+
+		</div>
+
+		<script src="../js/axios.min.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+		<script>
+			new Vue({
+				el: '#app',
+				data: {
+					books: []
+				},
+				methods: {
+					loadBooks() {
+						axios.get('http://localhost:9000/book/list').then(res => {
+							if (res.data.isOk) {
+								// alert(res.data.msg);
+								this.$message('加载数据成功');
+								this.books = res.data.books;
+							}
+						})
+					},
+					delBook(id) {
+						alert(id)
+						// axios.get('http://localhost:9000/book/del', {
+						// 	params: {
+						// 		id
+						// 	}
+						// }).then(res => {
+						// 	alert(res.data.msg);
+						// 	this.loadBooks()
+						// })
+					}
+				},
+				created() {
+					//Vue对象创建完成时，执行的钩子函数
+					this.loadBooks()
+				}
+			})
+		</script>
+	</body>
+</html>

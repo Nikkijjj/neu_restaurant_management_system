@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ListPage</title>
+</head>
+<body>
+    <div id="app">
+        <table border="1">
+            <tr>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>班级</th>
+                <th>专业</th>
+            </tr>
+            <tr v-for="s in students" class="center">
+                <td width="50">{{s.studentid}}</td>
+                <td width="80">{{s.name}}</td>
+                <td width="80">{{s.stuclass}}</td>
+                <td width="200" width="50">{{s.major}}</td>
+            </tr>
+        </table>
+        <!-- <el-link icon="el-icon-edit" href="add.html">添加图书</el-link>
+        <el-table
+    :data="tableData"
+    style="width: 100%"
+    max-height="250">
+    <el-table-column
+      fixed
+      prop="date"
+      label="学号"
+      width="70">
+    </el-table-column>
+    <el-table-column
+      prop="name"
+      label="姓名"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      prop="province"
+      label="班级"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      prop="city"
+      label="专业"
+      width="300">
+    </el-table-column>
+  </el-table> -->
+       
+    </div>
+    
+    <script src="../Ajax/axios.min.js"></script>
+    <script src="../vue.js"></script>
+    <!-- 引入样式 -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"> -->
+    <!-- 引入组件库 -->
+    <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                students:[]
+            },
+            methods:{
+                loadStudent(){
+                    axios.get("http://localhost:9000/student/list").then(res=>{
+                        if(res.data.isOk){
+								// alert(res.data.msg);
+                                // this.$message('加载数据成功');
+								this.students = res.data.students;
+							}
+                    })
+                }
+            },
+            created(){
+                //Vue对象创建完成时，执行的钩子函数
+                this.loadStudent();
+            }
+
+        })
+    </script>
+</body>
+</html>

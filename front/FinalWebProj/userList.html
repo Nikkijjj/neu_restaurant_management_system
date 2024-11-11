@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    
+</head>
+<body>
+    <div id="app1">
+        <!-- <table border="1">
+            <tr>
+                <th>用户编号</th>
+                <th>用户名</th>
+                <th>用户密码</th>
+            </tr>
+            <tr v-for="u in users" class="center">
+                <td width="50">{{u.userId}}</td>
+                <td width="80">{{u.userName}}</td>
+                <td width="80">{{u.loginPwd}}</td>
+            </tr> 
+        </table>  -->
+        <el-table
+            :data="users"
+            height="600"
+            border
+            style="width: 80% ;margin: 0 auto; text-align: center;">
+            <el-table-column
+              prop="userId"
+              label="用户编号"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="userName"
+              label="用户名"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="loginPwd"
+              label="用户密码"
+              width="200">
+            </el-table-column>
+            <el-table-column
+              label="操作1">
+              <template slot-scope="scope">
+                <el-button type="danger" size="mini" @click="deleteUser(scope.row.userId)">删除用户</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="操作2">
+              <template slot-scope="scope">
+                <el-button type="danger" size="mini" @click="redirectToUpdatePage(scope.row.userId)">更新</el-button>
+              </template>
+            </el-table-column>
+        </el-table>
+        <el-link icon="el-icon-edit" href="addUser.html" style="font-size: 16px; font-weight: bold;margin-top: 20px;">添加新用户</el-link>
+        <el-link icon="el-icon-menu" href="managerMenu.html" style="font-size: 16px; font-weight: bold;margin-top: 20px;margin-right: 1200px;">返回管理菜单</el-link>
+    </div>
+
+    <script src="../Ajax/axios.min.js"></script>
+    <script src="../vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <script>
+        axios.defaults.withCredentials = true;
+        new Vue({
+            el:"#app1",
+            data:{
+                users:[]
+            },
+            created(){
+                //Vue对象创建完成时，执行的钩子函数
+                this.loadUser();
+            },
+            methods:{
+                loadUser(){
+                     axios.get("http://localhost:9000/user/list").then(res=>{
+                        if(res.data.isOk){
+								this.users = res.data.users;
+                                this.$message.success('加载用户信息成功');
+							}
+                    })
+                },
+                deleteUser(id){
+                    if(!confirm('是否删除')){
+                        return;
+                    }
+                    axios.get("http://localhost:9000/user/delete",{params:{id}}).then(res=>{
+                        alert(res.data.msg);
+                        this.loadUser();
+                    })
+                },
+                redirectToUpdatePage(id) {
+                    // 在这里执行页面跳转
+                    const updateUr1 = 'updateUser.html?id=' + id;
+                    window.location.href = updateUr1;
+                }
+            }
+        })
+    </script>
+
+</body>
+</html>

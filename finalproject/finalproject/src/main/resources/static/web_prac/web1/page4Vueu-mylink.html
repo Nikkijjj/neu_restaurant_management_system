@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        链接地址：<input v-model="url"/>
+        链接名：<input v-model="linkName"/>
+        <a :href="url" target="_blank">{{linkName}}</a>
+        <br/>
+        <select name="">
+            <option v-for="s in star" value="s.id">{{s.name}}</option>
+        </select>
+        <!--v-for="遍历得到的元素" in 集合-->
+    </div>
+    <script src="../web_prac/vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                url:'',
+                linkName:'',
+                star:[{
+                    id:1,
+                    name:'白羊',
+                },
+                {
+                    id:2,
+                    name:'金牛', 
+                },
+                {
+                    id:3,
+                    name:'双子'
+                },
+                {
+                    id:4,
+                    name:'巨蟹'
+                },
+                {
+                    id:5,
+                    name:'狮子'
+                },
+                {
+                    id:6,
+                    name:'处女'
+                }
+            ]
+            }
+        })
+    </script>
+</body>
+</html>

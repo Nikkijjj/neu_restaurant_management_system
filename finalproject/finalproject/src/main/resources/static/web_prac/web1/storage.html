@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>学号<input type="text" id="stuId"/></p>
+    <p>姓名<input type="text" id="stuName"/></p>
+    <button id="saveBtn">保存</button>
+    <button id="loadBtn">加载</button>
+    <script>
+document.getElementById('saveBtn').onclick = function(){
+    let stu={
+        stuId:document.getElementById('stuId').value,
+        stuName:document.getElementById('stuName').value
+    }
+    let str = JSON.stringify(stu);
+    // localStorage;永久保存
+    // sessionStorage;在关闭浏览器之前保存
+    //setItem  getItem  removevItem
+    localStorage.setItem('student',str);
+}
+document.getElementById('loadBtn').onclick = function () {
+        let str = localStorage.getItem('student');
+        let stu = JSON.parse(str);
+        document.getElementById('stuId').value = stu.stuId;
+        document.getElementById('stuName').value = stu.stuName;
+}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="course"/>
+        <button @click="add()">添加</button>
+        <ul>
+            <li v-for="c in courseList">{{c}}</li>
+        </ul>
+    </div>
+    <script src="../web_prac/vue.js"></script>
+    <script>
+        <!--创建对象-->
+        new Vue({
+            el:'#app',
+            data:{
+                courseList:['JavaWeb','ios','VB'],
+                course:''
+            },
+            methods:{
+                //add:function(){},下面这个是简写
+                add(){
+                    this.courseList.push(this.course);
+                }
+            }
+        })
+    </script>
+</body>
+</html>

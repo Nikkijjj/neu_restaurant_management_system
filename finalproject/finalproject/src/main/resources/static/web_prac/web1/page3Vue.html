@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!--双向数据绑定，在input中加v-model实现双向绑定-->
+        <input type="text" v-model="info"/>
+         <!--单向数据绑定-->
+        <p>{{info}}</p>
+        <p>学号{{stu.id}}, 姓名{{stu.name}}</p>
+        <input type="text" v-model="num"/>
+        <!--v-if和v-else 有没有-->
+        <p v-if="num%2==0">是偶数</p>
+        <p v-else>是奇数</p>
+        <!--是否隐藏-->
+        <p v-show="num%2==0">是偶数</p>
+        <p v-show="num%2!=0">是奇数</p>
+        <div class="">
+            <input :type="inputType"/>
+            <button @click="textBoxType">
+                <span v-if="inputType=='text'">隐藏</span>
+                <span v-else>显示</span>
+            </button>
+            <!--@click等同于v-on:click-->
+            <!--:type等同于v-bind:type-->
+        </div>
+
+    </div>
+    <script src="../web_prac/vue.js"></script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                inputType:'password',
+                num:null,
+                info:'hello',
+                stu:{
+                    id:'20226816',
+                    name:'nikki'
+                }
+            },
+            methods:{
+                textBoxType(){
+                    if(this.inputType == 'text'){
+                        this.inputType = 'password';
+                    }
+                    else{
+                        this.inputType = 'text';
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

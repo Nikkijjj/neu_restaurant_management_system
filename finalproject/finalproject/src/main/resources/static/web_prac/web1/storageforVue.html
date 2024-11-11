@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!--v-model实现了表单元素和vue中data的双向绑定-->
+        <p>学号<input type="text" v-model="'stuId"/></p>
+        <p>姓名<input type="text" v-model="'stuName"/></p>
+        <button>保存</button>
+        <button>加载</button>
+        <p>
+            学号：{{stuId}}, 姓名：{{stuName}};
+        </p>
+        <ul>
+            <li v-for="'lan in arr">{{lan}}</li>
+        </ul>
+        <p v-for="(lan,index) in arr">{{index+1}}-{{lan}}</p>
+    </div>
+    <script src="web_prac/vue.js"></script>
+    <script>
+         new Vue({//创建Vue类对象，参数是JSON格式的
+            el:'#app',//确定页面中vue框架的工作区域
+            data:{//配置Vue的数据，可实现数据单向和双向绑定
+                stuId:'20226816',
+                stuName:'nikki',
+                arr:['java','hhh','nikki']
+            }
+         });
+    </script>
+</body>
+</html>

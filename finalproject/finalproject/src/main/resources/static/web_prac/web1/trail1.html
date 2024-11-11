@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>trail1</title>
+</head>
+<body>
+    <p><input type="text" id="num1"/></p>
+
+    <p><input type="text" id="num2"/></p>
+    <p><button id="addBtn">+</button><button id="subBtn">-</button></p>
+    <p>结果：<span id="res"></span></p>
+<script>
+
+    let calcu = function(op){
+        let a = parseFloat(document.getElementById('num1').value);
+        let b = parseFloat(document.getElementById('num2').value);
+        let num;
+
+        switch(op){
+            case'+': num=a+b;break;
+            case'-': num=a-b;break;
+        }
+        document.getElementById('res').innerHTML = num;
+    }
+    document.getElementById('addBtn').onclick = function(){
+        calcu('+');
+    }
+    document.getElementById('subBtn').onclick = function(){
+        calcu('-');
+    }
+
+</script> 
+
+</body>
+</html>

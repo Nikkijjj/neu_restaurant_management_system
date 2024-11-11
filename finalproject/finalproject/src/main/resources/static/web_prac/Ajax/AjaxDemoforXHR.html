@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <select v-model="page.pn" @change="loadStudents()">
+            <option v-for="i in 10" :value="i">第{{i}}页</option>
+        </select>{{pn}}
+        <button @click="loadStudents()">加载数据</button>
+        <table>
+            <tr>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>电话</th>
+            </tr>
+            <tr v-for="stu in students">
+                <td>{{stu.stuId}}</td>
+                <td>{{stu.name}}</td>
+                <td>{{stu.tel}}</td>
+            </tr>
+        </table>
+    </div>
+    <script src="../vue.js"></script>
+    <script src="../Ajax/axios.min.js"></script>
+    <script>
+        new Vue({
+				el:'#app',
+				data:{
+					page:{
+						pn:1,
+						size:10
+					},
+					students:[]
+				},
+				methods:{
+					loadStudents(){
+						let params = this.page;
+						axios.get('http://localhost:8080/AjaxServer/test',{params}).then(res=>{
+							this.students = res.data.result;
+						})
+					}
+				}
+			})
+    </script>
+</body>
+</html>

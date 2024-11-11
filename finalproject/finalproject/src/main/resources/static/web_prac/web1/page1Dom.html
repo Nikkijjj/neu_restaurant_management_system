@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input/>
+    <ul id="mylist">
+        <li></li>
+    </ul>
+    <script>
+        let course = ['JavaWeb', "ios","VB"]
+        function createList(){
+            let ul = document.createElementById('mylist');
+            for(let i=0; i<course.length; i++){
+                let li = document.createElement('li');
+                li.innerHTML = course[i];
+                ul.appendChild(li);
+             }
+        }
+        createList()
+        document.getElementById('btn').onclick = function(){
+            let course = document.getElementById('txt').value;
+            let ul = document.createElementById('mylist');
+
+        }
+    </script>
+</body>
+</html>

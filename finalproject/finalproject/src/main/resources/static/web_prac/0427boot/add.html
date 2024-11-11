@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <form action="">
+            <p>书名<input type="text" v-model="bookForm.title"/></p>
+            <p>价格<input type="text" v-model="bookForm.price"/></p>
+            <p>描述<input type="text" v-model="bookForm.desc"/></p>
+            <p><button @click.prevent="addBook()">添加</button></p>
+        </form>
+
+    </div>
+    <script src="../Ajax/axios.min.js"></script>
+    <script src="../vue.js"></script>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                bookForm:{
+                    title:'',
+                    price:null,
+                    desc:null
+                }
+            },
+            methods:{
+                addBook(){
+                    let fd = new FormData();
+                    fd.append('title',this.bookForm.title);
+                    fd.append('price',this.bookForm.price);
+                    fd.append('desc',this.bookForm.desc);
+                    axios.post("http://localhost:9000/book/add",fd).then(res=>{
+                        if(res.data.isOk){
+								alert(res.data.msg);
+								location.href = 'list.html';
+							}
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

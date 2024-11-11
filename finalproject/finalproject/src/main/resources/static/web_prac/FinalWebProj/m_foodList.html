@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>foodlist for manager</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+    <style>
+      /* 使用Flexbox布局将按钮水平居中 */
+      .container {
+          display: flex;
+          justify-content: center;
+          margin-top: 30px;
+      }
+      
+  </style>
+
+</head>
+<body>
+    <div id="app">
+      <div style="margin-top: 15px;margin-bottom:20px;display: flex;justify-content: center;">
+        <el-input placeholder="请输入菜品名称" v-model="foodName" class="input-with-select" style="width: 500px;">
+          <el-button slot="append" icon="el-icon-search" @click="searchFood(foodName)"></el-button>
+        </el-input>
+      </div>
+        <el-table
+            :data="food"
+            height="600"
+            border
+            style="width: 100%">
+            <el-table-column
+              prop="foodId"
+              label="菜品编号"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="foodName"
+              label="菜品名称"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="description"
+              label="菜品描述">
+            </el-table-column>
+            <el-table-column
+              prop="price"
+              label="菜品价格">
+            </el-table-column>
+            <el-table-column
+              prop="foodPic"
+              label="菜品图片">
+              <template slot-scope="scope">
+                <img :src="scope.row.foodPic" width="50px" height="50px" v-if="scope.row.foodPic != '' && scope.row.foodPic != null">
+                <span v-else style="color: red;">暂无图片</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="操作1">
+              <template slot-scope="scope">
+                <el-button type="danger" size="mini" @click="deleteFood(scope.row.foodId)">删除</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="操作2">
+              <template slot-scope="scope">
+                <el-button type="danger" size="mini" @click="redirectToUpdatePage(scope.row.foodId)">更新</el-button>
+              </template>
+            </el-table-column>
+        </el-table>
+        <el-link icon="el-icon-edit" href="addfood.html" style="font-size: 16px; font-weight: bold;margin-top: 20px;">添加新菜品</el-link>
+        <el-link icon="el-icon-menu" href="managerMenu.html" style="font-size: 16px; font-weight: bold;margin-top: 20px;margin-right: 1200px;">返回管理菜单</el-link>
+
+        <div class="container">
+          <el-button type="primary" @click="logout()" style="width: 100px; height: 40px;">退出</el-button>
+        </div>
+
+    </div>
+
+
+    <script src="../Ajax/axios.min.js"></script>
+    <script src="../vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <script>
+        axios.defaults.withCredentials = true;
+        new Vue({
+            el:"#app",
+            data:{
+                food:[],
+                foodName:'',
+                food:null
+            },
+            created(){
+                    //Vue对象创建完成时，执行的钩子函数
+                    this.loadFood();
+            },
+            methods:{
+                loadFood(){
+                    axios.get("http://localhost:9000/food/list").then(res=>{
+                        if(res.data.isOk){
+                            this.food = res.data.food;
+                            this.$message.success('加载菜品信息成功');
+                        }
+                    }).catch((error) => {
+                        console.log('Error: ', error);
+                            window.location.href = '/web_prac/FinalWebProj/error/401.html'
+                    }
+                    );
+                },
+                deleteFood(id){
+                    if(!confirm('是否删除')){
+                        return;
+                    }
+                    axios.get("http://localhost:9000/food/delete",{params:{id}}).then(res=>{
+                        this.$message.success('删除成功！');
+                        this.loadFood();
+                    })
+                },
+                searchFood(foodName){
+                  if(foodName.trim() == ''){
+                        this.loadFood();
+                        return;
+                    }
+                     axios.get("http://localhost:9000/food/search",{params:{foodName}}).then(res=>{
+                       if(res.data.isOk){
+                        this.food = [res.data.food];
+                        this.$message.success("查询菜品信息成功！");
+                       } else{
+                        this.food = [];
+                        this.$message.console.error("未找到该菜品！");
+                       }
+                    }).catch(error => {
+                        console.error('发生错误:', error);
+                        this.$message.error('查询菜品信息失败，请重试');
+                    });
+                },
+                redirectToUpdatePage(id) {
+                    // 在这里执行页面跳转
+                    const updateUr1 = 'updatefood.html?id=' + id;
+                    window.location.href = updateUr1;
+                },
+                logout(){
+                    axios.get("http://localhost:9000/logout").then(res=>{
+
+                      if(res.data ==="安全退出!"){
+                            alert(res.data);
+                            window.location.href = 'managerLogin.html';
+                        }else{
+                            alert(res.data);
+                        }
+                    })
+
+                }
+                
+            }
+        
+        })
+    </script>
+</body>
+</html>
